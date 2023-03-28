@@ -126,3 +126,5 @@ dmypy.json
 .mp4
 videos/
 *.mp4
+
+.vscode/

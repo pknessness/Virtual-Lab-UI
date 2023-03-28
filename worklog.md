@@ -16,6 +16,6 @@ Added more and different types of tests (Fatigue, Hardness, Charpy). Reorganized
 
 Began looking into AWS, most optimal seems like Amazon S3. AWS will take a bit to load, so I next began working on the time skipping, fast forwarding problem. I experimented with a good few new rendering methods. I've figured out how I can skip to a specific frame, and am now working on getting a consistent framerate, no matter the speed of the computer itself, which will lead directly into the time-bar.
 
-## March 28 [12:00AM - 1:00AM] [2:00AM - 3:30AM]
+## March 28 [12:00AM - 1:00AM] [2:00AM - 3:30AM] [3:00PM - ?:00PM]
 
 Working on multi-processes, and transferring data between two processes. May need to use threading instead.
