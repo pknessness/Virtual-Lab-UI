@@ -1,10 +1,9 @@
-import pygame
-import cv2
+import pygame, cv2, time
 
 videoBaseDirectory = "videos/"
 dataBaseDirectory = "raw_data/"
 
-def runWindow(fps, material, test):
+def runWindow(fps, material, test, trueTimeFlag):
 
     videoDirectory = videoBaseDirectory+test+"/"+material+"Full.mp4"
 
@@ -25,22 +24,31 @@ def runWindow(fps, material, test):
     run = success
 
     pygame.init()
+    
+    time = 0
+
     while run:
         clock.tick(fps)
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 run = False
-        
+
         success, video_image = video.read()
 
         if success:
             video_surf = pygame.image.frombuffer(
                 video_image.tobytes(), video_image.shape[1::-1], "BGR")
         else:
-            run = False
+            #run = False
+            continue
 
         window.blit(pygame.transform.scale(video_surf,scaledSize(pygame.display.get_surface().get_size(), video_surf.get_size())), (0, 0))
         pygame.display.flip()
+
+        time += clock.get_time()
+        if(trueTimeFlag):
+            print()
+            video.set(cv2.CAP_PROP_POS_FRAMES, int(time * 1000.0 / fps))
 
     pygame.quit()
     #exit()

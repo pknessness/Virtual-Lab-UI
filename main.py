@@ -106,7 +106,7 @@ class MainWindow(QMainWindow):
     def start_sim(self, s):
         print(fps)
         try:
-            simulation.runWindow(fps,material, test)
+            simulation.runWindow(fps,material, test, True)
             self.failureLabel.setText("")
         except FileNotFoundError:
             self.failureLabel.setText("One or more of the videos not found")
