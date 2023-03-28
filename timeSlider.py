@@ -30,10 +30,10 @@ class TimeScale(QMainWindow):
         # to take up all the space in the window by default.
         self.setCentralWidget(widget)
 
-        
 
-app = QApplication(sys.argv)
-sliderbar = TimeScale()
-sliderbar.show()
+def createSlider():
+    app = QApplication(sys.argv)
+    sliderbar = TimeScale()
+    sliderbar.show()
 
-app.exec()
+    app.exec()  

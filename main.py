@@ -23,6 +23,7 @@ import simulation, exportData
 fps = 30
 material = "Aluminum6061"
 test = "Tensile"
+allFrames = False
 
 # Subclass QMainWindow to customize your application's main window
 class MainWindow(QMainWindow):
@@ -66,6 +67,7 @@ class MainWindow(QMainWindow):
             success,
             playbackSpeedText,
             playbackSpeed,
+            allFramesOrTimeAccurate,
         ]
 
         chooseMaterial.addItems(["Aluminum 6061", "Steel 1084", "Steel 316L" , "Brass 360", "PLA"])
@@ -85,6 +87,8 @@ class MainWindow(QMainWindow):
 
         enterSimButton.clicked.connect(self.start_sim)
         #enterSimButton.setStyleSheet("color: lime")
+
+        allFramesOrTimeAccurate.stateChanged.connect(self.allFrames_changed)
 
         getDataButton.clicked.connect(self.export_data)
         
@@ -106,11 +110,15 @@ class MainWindow(QMainWindow):
     def start_sim(self, s):
         print(fps)
         try:
-            simulation.runWindow(fps,material, test, True)
+            simulation.runWindow(fps,material, test, allFrames)
             self.failureLabel.setText("")
         except FileNotFoundError:
             self.failureLabel.setText("One or more of the videos not found")
             self.failureLabel.setStyleSheet("color:red")
+
+    def allFrames_changed(self, s):
+        global allFrames
+        allFrames = s
 
 
     def fps_changed(self, s):

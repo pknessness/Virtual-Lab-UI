@@ -46,9 +46,9 @@ def runWindow(fps, material, test, trueTimeFlag):
         pygame.display.flip()
 
         time += clock.get_time()
+        #print(time, ", ", trueTimeFlag)
         if(trueTimeFlag):
-            print()
-            video.set(cv2.CAP_PROP_POS_FRAMES, int(time * 1000.0 / fps))
+            video.set(cv2.CAP_PROP_POS_FRAMES, int(time * fps / (1000.0)))
 
     pygame.quit()
     #exit()

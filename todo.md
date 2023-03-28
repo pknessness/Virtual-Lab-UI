@@ -11,6 +11,4 @@ get better scaling for the videos (set up smaller class to instantiate the indiv
 
 if value for singleslot >= 200, set step to 100 per, and if less set to 10
 
-
-
 make success label green
