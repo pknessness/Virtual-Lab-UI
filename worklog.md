@@ -1,0 +1,23 @@
+# Work Log
+
+## March 9 [1:00PM - 5:00PM]
+
+Began working on project, got a basic outline of the framework, displaying videos at a speed, displaying multiple videos, and displaying videos that are at length (2 Hours)
+
+## March 10 [4:00PM - 6:00PM]
+
+Set up UI using pyQT5. Set up all the basic buttons, split files for simulation and main (UI). Also set up choosing a file directory and exporting files to the user's computer. Reorganized folders to better work with both videos and raw data.
+
+## March 14 [1:00PM - 5:00PM]
+
+Added more and different types of tests (Fatigue, Hardness, Charpy). Reorganized folders to be more condusive to this. Videos werent running fast enough, attempted to run things threaded to speed this up, however this ended in faults. Also began working with the time slider, to see if we could pick and choose where in the video the user is. This may end up being a massive change in the simulation code
+
+## March 27 [10:00AM - 12:00PM] [1:00PM - ?:00PM]
+
+Began looking into AWS, most optimal seems like Amazon S3. 
+
+
+
+
+
+
