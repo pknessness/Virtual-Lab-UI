@@ -84,6 +84,7 @@ class MainWindow(QMainWindow):
         dial.setMinimum(0)
         dial.setMaximum(1000)
 
+        allFramesOrTimeAccurate.setChecked(True)
 
         enterSimButton.clicked.connect(self.start_sim)
         #enterSimButton.setStyleSheet("color: lime")
