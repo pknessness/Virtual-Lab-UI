@@ -1,5 +1,5 @@
 import sys
-
+from multiprocessing import Process
 from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import (
     QApplication,
@@ -18,7 +18,7 @@ from PyQt5.QtWidgets import (
     QWidget,
 )
 
-import simulation, exportData
+import simulation, exportData, timeSlider
 
 fps = 30
 material = "Aluminum6061"
@@ -98,6 +98,8 @@ class MainWindow(QMainWindow):
         chooseMaterial.currentTextChanged.connect(self.material_changed)
         chooseTestType.currentTextChanged.connect(self.test_changed)
 
+        chooseTestType.setCurrentIndex(2)
+
         for w in widgets:
             layout.addWidget(w)
 
@@ -111,6 +113,12 @@ class MainWindow(QMainWindow):
     def start_sim(self, s):
         print(fps)
         try:
+            # p = Process(target=timeSlider.createSlider)
+            # p.start()
+
+            sliderbar = timeSlider.TimeScale()
+            sliderbar.show()
+
             simulation.runWindow(fps,material, test, allFrames)
             self.failureLabel.setText("")
         except FileNotFoundError:

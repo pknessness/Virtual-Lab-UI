@@ -18,4 +18,8 @@ Began looking into AWS, most optimal seems like Amazon S3. AWS will take a bit t
 
 ## March 28 [12:00AM - 1:00AM] [2:00AM - 3:30AM] [3:00PM - 6:00PM]
 
-Working on multi-processes, and transferring data between two processes. May need to use threading instead. 
+Working on multi-processes, and transferring data between two processes. May need to use threading instead. Fixed a number of bugs with the slider bar, processes, and threading. Still need to work on transferring data between the slider and the video, as my first attempt made everything incredibly slow.
+
+## March 29 [12:30AM - 2:30AM]
+
+AWS has loaded, have begun attempting to do light tests with streaming video from AWS. So far, the stream data I'm getting seems to be garbage. Need to figure out what's going wrong with getting the stream data. The second issue is that the stream data is incredibly slow. May need to set up a backup method to run this.

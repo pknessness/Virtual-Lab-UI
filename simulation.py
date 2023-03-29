@@ -1,4 +1,43 @@
 import pygame, cv2, time
+import sys
+
+from PyQt5.QtCore import Qt
+from PyQt5.QtWidgets import (
+    QMainWindow,
+    QApplication,
+    QSlider,
+    QVBoxLayout,
+    QWidget,
+)
+
+# Subclass QMainWindow to customize your application's main window
+class TimeScale(QMainWindow):
+    def __init__(self):
+        super().__init__()
+
+        self.setWindowTitle("")
+        self.resize(1000,90)
+
+        layout = QVBoxLayout()
+
+        slider = QSlider(Qt.Horizontal)
+
+        layout.addWidget(slider)
+
+        widget = QWidget()
+        widget.setLayout(layout)
+
+        # Set the central widget of the Window. Widget will expand
+        # to take up all the space in the window by default.
+        self.setCentralWidget(widget)
+
+
+def createSlider():
+    #appSlider = QApplication(sys.argv)
+    sliderbar = TimeScale()
+    sliderbar.show()
+
+    #appSlider.exec()  
 
 videoBaseDirectory = "videos/"
 dataBaseDirectory = "raw_data/"
@@ -38,6 +77,8 @@ def runWindow(fps, material, test, trueTimeFlag):
         if success:
             video_surf = pygame.image.frombuffer(
                 video_image.tobytes(), video_image.shape[1::-1], "BGR")
+            #print(f"size: {len(video_image.tobytes())}, dims: {video_image.shape[1::-1]}")
+            print(f"frame 1: {video_image.tobytes()[0]}|{video_image.tobytes()[5]}|{video_image.tobytes()[1249]}|{video_image.tobytes()[100000]}|{video_image.tobytes()[12502]}")
         else:
             #run = False
             continue
