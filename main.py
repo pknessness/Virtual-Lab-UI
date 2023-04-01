@@ -1,6 +1,12 @@
+import pip
 import sys
 from multiprocessing import Process
-from PyQt5.QtCore import Qt
+try:
+    from PyQt5.QtCore import Qt
+except ModuleNotFoundError: 
+    pip.main(['install', 'PyQt5'])
+    from PyQt5.QtCore import Qt
+
 from PyQt5.QtWidgets import (
     QApplication,
     QCheckBox,
@@ -18,7 +24,9 @@ from PyQt5.QtWidgets import (
     QWidget,
 )
 
-import simulation, exportData, timeSlider
+import localSimulation, boto3Simulation, exportData, timeSlider, globals
+
+useAWS = True
 
 fps = 30
 material = "Aluminum6061"
@@ -118,8 +126,11 @@ class MainWindow(QMainWindow):
 
             sliderbar = timeSlider.TimeScale()
             sliderbar.show()
-
-            simulation.runWindow(fps,material, test, allFrames)
+            globals.setSlider(sliderbar)
+            if(useAWS):
+                boto3Simulation.runWindow(fps, material, test, allFrames)
+            else:
+                localSimulation.runWindow(fps, material, test, allFrames)
             self.failureLabel.setText("")
         except FileNotFoundError:
             self.failureLabel.setText("One or more of the videos not found")
@@ -132,7 +143,7 @@ class MainWindow(QMainWindow):
 
     def fps_changed(self, s):
         global fps
-        print("Percent",s)
+        #print("Percent",s)
         fps = 30 * s / 100
         # if(s >= 1000):
         #    self.playbackMultiplier.setSingleStep(1000)
@@ -141,12 +152,12 @@ class MainWindow(QMainWindow):
             self.playbackMultiplier.setSingleStep(100)
         else:
             self.playbackMultiplier.setSingleStep(10)
-        print(fps)
+        #print(fps)
 
     def material_changed(self, s):
         global material
         material = s.replace(" ","")
-        print("Material",material)
+        #print("Material",material)
         
         #if(s > 200):
         #    playbackspeed
@@ -155,7 +166,7 @@ class MainWindow(QMainWindow):
     def test_changed(self, s):
         global test, material
         test = s.replace(" ","")
-        print("Test",test)
+        #print("Test",test)
         if(test == "Tensile"):
             self.chooseMaterialBox.clear()
             self.chooseMaterialBox.addItems(["Aluminum 6061", "Steel 1084", "Steel 316L" , "Brass 360", "PLA"])
@@ -179,6 +190,8 @@ class MainWindow(QMainWindow):
     def modifyDial(self, num):
         self.dialRoll.setValue(num)
 
+def modifySlider():
+    print(".")
         
 
 app = QApplication(sys.argv)

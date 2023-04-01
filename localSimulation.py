@@ -1,5 +1,11 @@
-import pygame, cv2, time
-import sys
+import pip
+import pygame
+try:
+    import cv2
+except ModuleNotFoundError: 
+    pip.main(['install', 'opencv-python'])
+    import cv2
+import sys, time
 
 from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import (
@@ -93,6 +99,8 @@ def runWindow(fps, material, test, trueTimeFlag):
 
     pygame.quit()
     #exit()
+
+#def display(byte)
 
 def scaledSize(screen, surf):
     scale = screen[0]/surf[0]

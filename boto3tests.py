@@ -1,5 +1,11 @@
+import pip
 import boto3
-import pygame, cv2
+try:
+    import pygame
+except ModuleNotFoundError: 
+    pip.main(['install', 'pygame'])
+    import pygame
+import cv2
 from credentials import ACCESS_KEY, SECRET_KEY
 #import moviepy.editor
 

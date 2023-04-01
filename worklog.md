@@ -23,3 +23,8 @@ Working on multi-processes, and transferring data between two processes. May nee
 ## March 29 [12:30AM - 2:30AM]
 
 AWS has loaded, have begun attempting to do light tests with streaming video from AWS. So far, the stream data I'm getting seems to be garbage. Need to figure out what's going wrong with getting the stream data. The second issue is that the stream data is incredibly slow. May need to set up a backup method to run this.
+
+## March 31 [10:00PM - 12:00AM]
+
+Have set up a basic auto-download-dependencies framework
+Also, am now running the videos purely from AWS, no local copies, and the 
