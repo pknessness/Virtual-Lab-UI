@@ -24,7 +24,9 @@ Working on multi-processes, and transferring data between two processes. May nee
 
 AWS has loaded, have begun attempting to do light tests with streaming video from AWS. So far, the stream data I'm getting seems to be garbage. Need to figure out what's going wrong with getting the stream data. The second issue is that the stream data is incredibly slow. May need to set up a backup method to run this.
 
-## March 31 [10:00PM - 12:00AM]
+## March 31 [10:00PM - 2:00AM] April 1
 
 Have set up a basic auto-download-dependencies framework
-Also, am now running the videos purely from AWS, no local copies, and the 
+Also, am now running the videos purely from AWS, no local copies, and that works well, and at a reasonable speed (Slightly slow), but can likely be sped up.
+
+Having major issues with time jumping. Time jumping seems to cause values out of range and a fault. Need to figure out whats happening there. May be a result of the PyQt5 multiprocessing methods. May need to pipeline or thread, or perhaps switch to an entirely pygame timejump method.
