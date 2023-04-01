@@ -1,9 +1,7 @@
 import boto3
 import pygame, cv2
-import moviepy.editor
-
-ACCESS_KEY = "AKIAUG6FEDU36WL6CGYX"
-SECRET_KEY = "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"
+from credentials import ACCESS_KEY, SECRET_KEY
+#import moviepy.editor
 
 s3 = boto3.client('s3',
     aws_access_key_id=ACCESS_KEY,

@@ -128,3 +128,5 @@ videos/
 *.mp4
 
 .vscode/
+
+credentials.py

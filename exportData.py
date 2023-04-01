@@ -1,6 +1,6 @@
 from tkinter import Tk     # from tkinter import Tk for Python 3.x
 from tkinter.filedialog import askopenfilename,askdirectory
-import lib.shutil as shutil
+import shutil
 import os
 
 def export(material):
