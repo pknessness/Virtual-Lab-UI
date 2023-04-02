@@ -1,14 +1,13 @@
-notes:
+# Todo:
 
-things to do next:
-server
-fast forward/ time bar
-zoom in
+* Confirm speed of server
 
-add an error qt5 if nonetype (video not found)
+* Time bar
 
-get better scaling for the videos (set up smaller class to instantiate the individual surfaces)
+* Zoom in (Selective zoom of section of screen)
+  
+  * Alternatively, pick a set and have it zoom in, but that requires a set of variables of sizes for each video.
 
-if value for singleslot >= 200, set step to 100 per, and if less set to 10
+* Python into an exe with all the dependencies
 
-make success label green
+* Timestamps on time bar
