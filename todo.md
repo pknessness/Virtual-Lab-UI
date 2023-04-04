@@ -14,4 +14,4 @@
 
 * Figure out how to get data from xlcx (raw data file), modify it, and create a temporary file of this type to have a user download
   
-  * Get John to send me a variance range for each type of value (+- 0.0001?)
+  * John's variance for each data is +-0.0001

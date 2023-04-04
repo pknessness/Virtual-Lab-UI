@@ -33,4 +33,6 @@ Having major issues with time jumping. Time jumping seems to cause values out of
 
 ## March 3 [2:00PM - 3:00PM] [7:00PM - 8:30PM]
 
-Had meeting with John, need him to give me randomizer +-
+Had meeting with John, need him to give me randomizer +-. May also have him downgrade videos to 720p and see if it becomes faster that way. Need to figure out how to compile python file into one exe that is usable by anyone.
+
+Beyond this, need to do time bar stuff for the pygame window, looking into libraries to help with that. Looking like theres something called PygameGUI I can use
