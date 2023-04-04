@@ -11,3 +11,7 @@
 * Python into an exe with all the dependencies
 
 * Timestamps on time bar
+
+* Figure out how to get data from xlcx (raw data file), modify it, and create a temporary file of this type to have a user download
+  
+  * Get John to send me a variance range for each type of value (+- 0.0001?)

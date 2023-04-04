@@ -30,3 +30,7 @@ Have set up a basic auto-download-dependencies framework
 Also, am now running the videos purely from AWS, no local copies, and that works well, and at a reasonable speed (Slightly slow), but can likely be sped up.
 
 Having major issues with time jumping. Time jumping seems to cause values out of range and a fault. Need to figure out whats happening there. May be a result of the PyQt5 multiprocessing methods. May need to pipeline or thread, or perhaps switch to an entirely pygame timejump method.
+
+## March 3 [2:00PM - 3:00PM] [7:00PM - 8:30PM]
+
+Had meeting with John, need him to give me randomizer +-
