@@ -124,9 +124,9 @@ class MainWindow(QMainWindow):
             # p = Process(target=timeSlider.createSlider)
             # p.start()
 
-            sliderbar = timeSlider.TimeScale()
-            sliderbar.show()
-            globals.setSlider(sliderbar)
+            # sliderbar = timeSlider.TimeScale()
+            # sliderbar.show()
+            # globals.setSlider(sliderbar)
             if(useAWS):
                 boto3Simulation.runWindow(fps, material, test, allFrames)
             else:

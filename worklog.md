@@ -36,3 +36,7 @@ Having major issues with time jumping. Time jumping seems to cause values out of
 Had meeting with John, need him to give me randomizer +-. May also have him downgrade videos to 720p and see if it becomes faster that way. Need to figure out how to compile python file into one exe that is usable by anyone.
 
 Beyond this, need to do time bar stuff for the pygame window, looking into libraries to help with that. Looking like theres something called PygameGUI I can use
+
+## March 4 [5:00PM - 7:00PM]
+
+Tried some things with the time bar gui, so far nothing that is what I am looking for. Attempted pygame_gui and thorpy. Thorpy seems slightly viable, but am going to try some others.
