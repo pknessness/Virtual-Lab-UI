@@ -12,11 +12,21 @@ s3_client = boto3.client('s3',
 videoBaseDirectory = "videos/"
 dataBaseDirectory = "raw_data/"
 
+barColor = (200,200,200)
+handleWidth = 10
+handleHeight = 35
+sliderHeight = 30
+resolution = "default"
+
 def runWindow(fps, material, test, trueTimeFlag):
-    frameCount = 0    
+    frameCount = 0
     
     frames = []
-    key = videoBaseDirectory + test + "/" + material + "Full.mp4"
+    key = ""
+    if(resolution == "4K" or resolution == "default"):
+        key = videoBaseDirectory + test + "/" + material + "Full.mp4"
+    else:
+        key = videoBaseDirectory + test + "/" + material + "Full"+ resolution +".mp4"
 
     #print(f"key: {key}")                
 
@@ -48,7 +58,7 @@ def runWindow(fps, material, test, trueTimeFlag):
     run = success
 
     pygame.init()
-    slider = Slider(window, 0, pygame.display.get_window_size()[1] - 30, pygame.display.get_window_size()[0], 30, curved = False, handleRadius = 15, max = frameMax, color = (60,60,60))
+    slider = Slider(window, 0, pygame.display.get_window_size()[1] - sliderHeight, pygame.display.get_window_size()[0], sliderHeight, curved = False, handleRadius = 15, max = frameMax, color = barColor, handleColor = barColor)
 
     time = 0
     prevSelect = False
@@ -63,15 +73,29 @@ def runWindow(fps, material, test, trueTimeFlag):
                 break
             elif event.type == pygame.VIDEORESIZE:
                 val = slider.getValue()
-                slider = Slider(window, 0, pygame.display.get_window_size()[1] - 30, pygame.display.get_window_size()[0], 30, curved = False, handleRadius = 15, max = frameMax, color = (60,60,60), value = val)
+                slider = Slider(window, 0, pygame.display.get_window_size()[1] - sliderHeight, pygame.display.get_window_size()[0], sliderHeight, curved = False, handleRadius = 15, max = frameMax, color = barColor, handleColor = barColor, value = val)
 
         slider.listen(events)
-        if((not slider.selected) and (not prevSelect)):
-            frameNumber = video.get(cv2.CAP_PROP_POS_FRAMES)
-            slider.setValue(frameNumber)
+        
+        
         
         if((not slider.selected) and prevSelect):
             video.set(cv2.CAP_PROP_POS_FRAMES, slider.getValue())
+            
+        frameNumber = video.get(cv2.CAP_PROP_POS_FRAMES)
+        locX = int(pygame.display.get_window_size()[0] * float(frameNumber)/frameMax)
+        
+        pygame.draw.rect(window,(0,0,0), (0, pygame.display.get_window_size()[1] - handleHeight, pygame.display.get_window_size()[0], handleHeight))
+        
+        if((not slider.selected) and (not prevSelect)):
+            slider.setValue(frameNumber)
+            #pygame.draw.rect(window,(240,100,90), (0, pygame.display.get_window_size()[1] - sliderHeight, locX, sliderHeight))
+            #r.update()
+        
+        if(slider.selected):
+            pygame.draw.rect(window,(254,10,10), (locX - handleWidth/2, pygame.display.get_window_size()[1] - handleHeight, handleWidth, handleHeight))
+            pygame.display.update((0, pygame.display.get_window_size()[1] - handleHeight, pygame.display.get_window_size()[0], handleHeight))
+            #pygame.display.flip()
         
         success, video_image = video.read()
 
@@ -82,22 +106,28 @@ def runWindow(fps, material, test, trueTimeFlag):
             run = False
             continue
 
-        window.blit(pygame.transform.scale(video_surf,scaledSize(pygame.display.get_surface().get_size(), video_surf.get_size())), (0, 0))
-        #slider.y = pygame.display.get_window_size()[1] - 30
+        #slider.y = pygame.display.get_window_size()[1] - sliderHeight
         #slider.width = pygame.display.get_window_size()[0]
+        slider.handleColour = (barColor)
         slider.draw()
+
+        window.blit(pygame.transform.scale(video_surf,scaledSize(pygame.display.get_surface().get_size(), video_surf.get_size())), (0, 0))
         
+        pygame.draw.rect(window,(240,100,90), (0, pygame.display.get_window_size()[1] - sliderHeight, locX, sliderHeight))
+        pygame.draw.rect(window,(254,10,10), (locX - handleWidth/2, pygame.display.get_window_size()[1] - handleHeight, handleWidth, handleHeight))
+        
+        # pygame.draw.circle(window,(240,40,60), (int(pygame.display.get_window_size()[0] * float(frameNumber)/frameMax),pygame.display.get_window_size()[1] - 15,),15)
         pygame.display.flip()
 
-        time += clock.get_time()
-        if(globals.manualModify):
-            video.set(cv2.CAP_PROP_POS_FRAMES, globals.getFrame())
-            globals.manualModify = False
-        else:
-            globals.mod(video.get(cv2.CAP_PROP_POS_FRAMES))
-        if(globals.getSlider() != None):
-            print(f"fnum{globals.getFrame()}")
-            globals.getSlider().modify(globals.getFrame())
+        # time += clock.get_time()
+        # if(globals.manualModify):
+        #     video.set(cv2.CAP_PROP_POS_FRAMES, globals.getFrame())
+        #     globals.manualModify = False
+        # else:
+        #     globals.mod(video.get(cv2.CAP_PROP_POS_FRAMES))
+        # if(globals.getSlider() != None):
+        #     print(f"fnum{globals.getFrame()}")
+        #     globals.getSlider().modify(globals.getFrame())
         
         prevSelect = slider.selected
         

@@ -33,7 +33,7 @@ fps = 30
 material = "Aluminum6061"
 test = "Tensile"
 allFrames = False
-resolution = "4K"
+#resolution = "720p"
 
 # Subclass QMainWindow to customize your application's main window
 class MainWindow(QMainWindow):
@@ -81,9 +81,10 @@ class MainWindow(QMainWindow):
             allFramesOrTimeAccurate,
             toggle4K
         ]
-
+        chooseTestType.addItems(["Tensile", "Fatigue", "Rockwell Hardness" , "Charpy", "Vickers Hardness"])
+        
         chooseMaterial.addItems(["Aluminum 6061", "Steel 1084", "Steel 316L" , "Brass 360", "PLA"])
-        chooseTestType.addItems(["Tensile", "Fatigue", "Hardness" , "Charpy"])
+        
 
         chooseBreakageOnlyCheckBox.setText("Breakage Point Only")
 
@@ -111,6 +112,7 @@ class MainWindow(QMainWindow):
         chooseTestType.currentTextChanged.connect(self.test_changed)
 
         chooseTestType.setCurrentIndex(2)
+        chooseMaterial.setCurrentIndex(3)
 
         for w in widgets:
             layout.addWidget(w)
@@ -123,6 +125,7 @@ class MainWindow(QMainWindow):
         self.setCentralWidget(widget)
     
     def start_sim(self, s):
+        global test
         print(fps)
         try:
             # p = Process(target=timeSlider.createSlider)
@@ -131,6 +134,8 @@ class MainWindow(QMainWindow):
             # sliderbar = timeSlider.TimeScale()
             # sliderbar.show()
             # globals.setSlider(sliderbar)
+            if(test == "RockwellHardness"):
+                test = "Hardness"
             if(useAWS):
                 boto3Simulation.runWindow(fps, material, test, allFrames)
             else:
@@ -178,12 +183,15 @@ class MainWindow(QMainWindow):
         elif(test == "Fatigue"):
             self.chooseMaterialBox.clear()
             self.chooseMaterialBox.addItems(["Steel 316L"])
-        elif(test == "Hardness"):
+        elif(test == "Rockwell Hardness"):
             self.chooseMaterialBox.clear()
             self.chooseMaterialBox.addItems(["Brass 360"])
         elif(test == "Charpy"):
             self.chooseMaterialBox.clear()
             self.chooseMaterialBox.addItems(["Steel 4140"])
+        elif(test == "Vickers Hardness"):
+            self.chooseMaterialBox.clear()
+            self.chooseMaterialBox.addItems(["Titanium"])
 
         
 
@@ -196,7 +204,7 @@ class MainWindow(QMainWindow):
         self.dialRoll.setValue(num)
 
 def modifySlider():
-    print(".")
+    print(".")  
         
 
 app = QApplication(sys.argv)
