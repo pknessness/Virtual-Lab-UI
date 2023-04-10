@@ -41,7 +41,7 @@ Beyond this, need to do time bar stuff for the pygame window, looking into libra
 
 Tried some things with the time bar gui, so far nothing that is what I am looking for. Attempted pygame_gui and thorpy. Thorpy seems slightly viable, but am going to try some others.
 
-## April 6 [1:00PM - 3:00PM]
+## April 5 [1:00PM - 3:00PM]
 
 Pygame widgets seems to be working. I've set up a resizing, so it changes with the window size. Still need to set up time jumping. Also need to test 720p video.
 
