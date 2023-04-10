@@ -1,0 +1,1 @@
+C:\Users\ansha\AppData\Local\Programs\Python\Python38\Scripts\pyi-makespec.exe --onefile -p "C:\Users\ansha\AppData\Local\Programs\Python\Python310\lib\site-packages\pygame_widgets\" main.py

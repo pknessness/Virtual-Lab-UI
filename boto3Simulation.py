@@ -43,6 +43,7 @@ def runWindow(fps, material, test, trueTimeFlag):
     clock = pygame.time.Clock()
 
     print('Path to module:',pygame.__file__)
+    print('Path to module:',pygame_widgets.__file__)
 
     run = success
 
@@ -59,6 +60,7 @@ def runWindow(fps, material, test, trueTimeFlag):
         for event in events:
             if event.type == pygame.QUIT:
                 run = False
+                break
             elif event.type == pygame.VIDEORESIZE:
                 val = slider.getValue()
                 slider = Slider(window, 0, pygame.display.get_window_size()[1] - 30, pygame.display.get_window_size()[0], 30, curved = False, handleRadius = 15, max = frameMax, color = (60,60,60), value = val)
@@ -99,7 +101,10 @@ def runWindow(fps, material, test, trueTimeFlag):
         
         prevSelect = slider.selected
         
-    window = pygame.display.set_mode((600,400), pygame.RESIZABLE)
+    window = pygame.display.set_mode((600,400))
+    standby = pygame.image.load('standby.png')
+    window.blit(standby, (0,0))
+    pygame.display.flip()
 #exit()
 
 def scaledSize(screen, surf):

@@ -24,7 +24,8 @@ from PyQt5.QtWidgets import (
     QWidget,
 )
 
-import localSimulation, boto3Simulation, exportData, timeSlider, globals
+#import localSimulation, 
+import boto3Simulation, exportData, timeSlider, globals
 
 useAWS = True
 
@@ -133,7 +134,8 @@ class MainWindow(QMainWindow):
             if(useAWS):
                 boto3Simulation.runWindow(fps, material, test, allFrames)
             else:
-                localSimulation.runWindow(fps, material, test, allFrames)
+                #localSimulation.runWindow(fps, material, test, allFrames)
+                print ("no local")
             self.failureLabel.setText("")
         except FileNotFoundError:
             self.failureLabel.setText("One or more of the videos not found")
