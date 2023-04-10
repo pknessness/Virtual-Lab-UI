@@ -32,6 +32,7 @@ fps = 30
 material = "Aluminum6061"
 test = "Tensile"
 allFrames = False
+resolution = "4K"
 
 # Subclass QMainWindow to customize your application's main window
 class MainWindow(QMainWindow):
@@ -56,6 +57,7 @@ class MainWindow(QMainWindow):
         playbackSpeed = QSpinBox()
         playbackSpeedText = QLabel("Playback Speed")
         success = QLabel()
+        toggle4K = QCheckBox("4K")
 
         self.successLabel = success
         self.chooseMaterialBox = chooseMaterial
@@ -76,6 +78,7 @@ class MainWindow(QMainWindow):
             playbackSpeedText,
             playbackSpeed,
             allFramesOrTimeAccurate,
+            toggle4K
         ]
 
         chooseMaterial.addItems(["Aluminum 6061", "Steel 1084", "Steel 316L" , "Brass 360", "PLA"])

@@ -1,4 +1,5 @@
-import boto3, cv2, pygame, globals
+import boto3, cv2, pygame, globals, pygame_widgets, sys
+from pygame_widgets.slider import Slider
 
 from credentials import ACCESS_KEY, SECRET_KEY
 
@@ -12,23 +13,25 @@ videoBaseDirectory = "videos/"
 dataBaseDirectory = "raw_data/"
 
 def runWindow(fps, material, test, trueTimeFlag):
-        
+    frameCount = 0    
+    
     frames = []
     key = videoBaseDirectory + test + "/" + material + "Full.mp4"
 
-    print(f"key: {key}")                
+    #print(f"key: {key}")                
 
     url = s3_client.generate_presigned_url('get_object', 
                                         Params = {'Bucket': "vlabtesting", 'Key': key}, 
-                                        ExpiresIn = 5) #this url will be available for 600 seconds
+                                        ExpiresIn = 2400) #this url will be available for 600 seconds
         
+    print(f"url: {url}")
     cap = cv2.VideoCapture(url)
         
     ret, frame = cap.read() 
 
     video = cv2.VideoCapture(url)
     video.set(cv2.CAP_PROP_FPS, fps)
-    globals.frameMax = video.get(cv2.CAP_PROP_FRAME_COUNT)
+    frameMax = video.get(cv2.CAP_PROP_FRAME_COUNT)
     #video.set(cv2.CAP_PROP_POS_FRAMES, 300)
 
     success, video_image = video.read()
@@ -44,16 +47,29 @@ def runWindow(fps, material, test, trueTimeFlag):
     run = success
 
     pygame.init()
+    slider = Slider(window, 0, pygame.display.get_window_size()[1] - 30, pygame.display.get_window_size()[0], 30, curved = False, handleRadius = 15, max = frameMax, color = (60,60,60))
 
     time = 0
+    prevSelect = False
 
     while run:
         clock.tick(fps)
-        for event in pygame.event.get():
+        events = pygame.event.get()
+        pygame_widgets.update(events)
+        for event in events:
             if event.type == pygame.QUIT:
                 run = False
+            elif event.type == pygame.VIDEORESIZE:
+                val = slider.getValue()
+                slider = Slider(window, 0, pygame.display.get_window_size()[1] - 30, pygame.display.get_window_size()[0], 30, curved = False, handleRadius = 15, max = frameMax, color = (60,60,60), value = val)
 
-        frameNumber = video.get(cv2.CAP_PROP_POS_FRAMES)
+        slider.listen(events)
+        if((not slider.selected) and (not prevSelect)):
+            frameNumber = video.get(cv2.CAP_PROP_POS_FRAMES)
+            slider.setValue(frameNumber)
+        
+        if((not slider.selected) and prevSelect):
+            video.set(cv2.CAP_PROP_POS_FRAMES, slider.getValue())
         
         success, video_image = video.read()
 
@@ -65,6 +81,10 @@ def runWindow(fps, material, test, trueTimeFlag):
             continue
 
         window.blit(pygame.transform.scale(video_surf,scaledSize(pygame.display.get_surface().get_size(), video_surf.get_size())), (0, 0))
+        #slider.y = pygame.display.get_window_size()[1] - 30
+        #slider.width = pygame.display.get_window_size()[0]
+        slider.draw()
+        
         pygame.display.flip()
 
         time += clock.get_time()
@@ -77,7 +97,9 @@ def runWindow(fps, material, test, trueTimeFlag):
             print(f"fnum{globals.getFrame()}")
             globals.getSlider().modify(globals.getFrame())
         
-    pygame.quit()
+        prevSelect = slider.selected
+        
+    window = pygame.display.set_mode((600,400), pygame.RESIZABLE)
 #exit()
 
 def scaledSize(screen, surf):

@@ -31,12 +31,20 @@ Also, am now running the videos purely from AWS, no local copies, and that works
 
 Having major issues with time jumping. Time jumping seems to cause values out of range and a fault. Need to figure out whats happening there. May be a result of the PyQt5 multiprocessing methods. May need to pipeline or thread, or perhaps switch to an entirely pygame timejump method.
 
-## March 3 [2:00PM - 3:00PM] [7:00PM - 8:30PM]
+## April 3 [2:00PM - 3:00PM] [7:00PM - 8:30PM]
 
 Had meeting with John, need him to give me randomizer +-. May also have him downgrade videos to 720p and see if it becomes faster that way. Need to figure out how to compile python file into one exe that is usable by anyone.
 
 Beyond this, need to do time bar stuff for the pygame window, looking into libraries to help with that. Looking like theres something called PygameGUI I can use
 
-## March 4 [5:00PM - 7:00PM]
+## April 4 [5:00PM - 7:00PM]
 
 Tried some things with the time bar gui, so far nothing that is what I am looking for. Attempted pygame_gui and thorpy. Thorpy seems slightly viable, but am going to try some others.
+
+## April 6 [1:00PM - 3:00PM]
+
+Pygame widgets seems to be working. I've set up a resizing, so it changes with the window size. Still need to set up time jumping. Also need to test 720p video.
+
+## April 10 [2:00AM - 4:30AM]
+
+Working more on time bar, it now reflects the positon of the video, but need video to freeze when the time bar is held, and reflect where it is dragged to. Having bugs with the closing windows, and bugs with the videos not playing all the way through. The time bar is now complete, minus the potential functionality of a preview.
