@@ -45,8 +45,12 @@ Tried some things with the time bar gui, so far nothing that is what I am lookin
 
 Pygame widgets seems to be working. I've set up a resizing, so it changes with the window size. Still need to set up time jumping. Also need to test 720p video.
 
-## April 10 [2:00AM - 5:00AM]
+## April 10 [2:00AM - 5:00AM] [10:30AM - 11:30AM]
 
 Working more on time bar, it now reflects the positon of the video, but need video to freeze when the time bar is held, and reflect where it is dragged to. Having bugs with the closing windows, and bugs with the videos not playing all the way through. The time bar is now complete, minus the potential functionality of a preview.
 
 Also worked more on building as a single exe, once I get something that seems to work on my computer, need to send to John. Having issues with some of the libraries being grabbed correctly.
+
+Time bar is very slow, jumping takes an innane amount of time. Perhaps this will be fixed by the720p.
+
+Also am able to compile into a single exe, but need John to test on a separate device to make sure this is usable by anyone.
