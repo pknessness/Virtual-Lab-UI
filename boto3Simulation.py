@@ -62,6 +62,9 @@ def runWindow(fps, material, test, trueTimeFlag):
 
     time = 0
     prevSelect = False
+    paused = False
+    prevFrame = 0
+    setFrame = True
 
     while run:
         clock.tick(fps)
@@ -80,6 +83,7 @@ def runWindow(fps, material, test, trueTimeFlag):
         
         
         if((not slider.selected) and prevSelect):
+            paused = False
             video.set(cv2.CAP_PROP_POS_FRAMES, slider.getValue())
             
         frameNumber = video.get(cv2.CAP_PROP_POS_FRAMES)
@@ -93,12 +97,25 @@ def runWindow(fps, material, test, trueTimeFlag):
             #r.update()
         
         if(slider.selected):
-            pygame.draw.rect(window,(254,10,10), (locX - handleWidth/2, pygame.display.get_window_size()[1] - handleHeight, handleWidth, handleHeight))
+            pygame.draw.rect(window,barColor, (0, pygame.display.get_window_size()[1] - sliderHeight, pygame.display.get_window_size()[0], sliderHeight))
+            pygame.draw.rect(window,(240,100,90), (0, pygame.display.get_window_size()[1] - sliderHeight, locX, sliderHeight))
+            pygame.draw.rect(window,(254,10,10), (int(pygame.display.get_window_size()[0] * float(slider.getValue())/frameMax) - handleWidth/2, pygame.display.get_window_size()[1] - handleHeight, handleWidth, handleHeight))
+            
             pygame.display.update((0, pygame.display.get_window_size()[1] - handleHeight, pygame.display.get_window_size()[0], handleHeight))
             #pygame.display.flip()
         
-        success, video_image = video.read()
-
+        
+        success, video_image
+        if(paused):
+            success = True
+            video_image = prevFrame
+        else:
+            success, video_image = video.read()
+            prevFrame = video_image
+            # if(setFrame == False):
+            #     prevFrame = video_image
+            #     setFrame = True
+            
         if success:
             video_surf = pygame.image.frombuffer(
                 video_image.tobytes(), video_image.shape[1::-1], "BGR")
@@ -109,7 +126,8 @@ def runWindow(fps, material, test, trueTimeFlag):
         #slider.y = pygame.display.get_window_size()[1] - sliderHeight
         #slider.width = pygame.display.get_window_size()[0]
         slider.handleColour = (barColor)
-        slider.draw()
+        if(not slider.selected):
+            slider.draw()
 
         window.blit(pygame.transform.scale(video_surf,scaledSize(pygame.display.get_surface().get_size(), video_surf.get_size())), (0, 0))
         
@@ -130,6 +148,9 @@ def runWindow(fps, material, test, trueTimeFlag):
         #     globals.getSlider().modify(globals.getFrame())
         
         prevSelect = slider.selected
+        if(frameNumber == frameMax - 1):
+            paused = True
+            
         
     window = pygame.display.set_mode((600,400))
     standby = pygame.image.load('standby.png')
