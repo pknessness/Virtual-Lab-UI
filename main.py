@@ -25,7 +25,7 @@ from PyQt5.QtWidgets import (
 )
 
 #import localSimulation, 
-import boto3Simulation, exportData, timeSlider, globals
+import boto3Simulation, exportData
 
 useAWS = True
 

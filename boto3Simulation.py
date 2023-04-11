@@ -1,4 +1,4 @@
-import boto3, cv2, pygame, globals, pygame_widgets, sys
+import boto3, cv2, pygame, pygame_widgets, sys
 from pygame_widgets.slider import Slider
 
 from credentials import ACCESS_KEY, SECRET_KEY
