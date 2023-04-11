@@ -127,6 +127,8 @@ class MainWindow(QMainWindow):
     def start_sim(self, s):
         global test
         print(fps)
+        self.failureLabel.setText("")
+        #self.failureLabel.setStyleSheet("color:black")
         try:
             # p = Process(target=timeSlider.createSlider)
             # p.start()
@@ -179,7 +181,7 @@ class MainWindow(QMainWindow):
         #print("Test",test)
         if(test == "Tensile"):
             self.chooseMaterialBox.clear()
-            self.chooseMaterialBox.addItems(["Aluminum 6061", "Steel 1084", "Steel 316L" , "Brass 360", "PLA"])
+            self.chooseMaterialBox.addItems(["Aluminum 6061", "Steel 1084", "Steel 316L" , "Brass 360", "PLA", "Steel 1018"])
         elif(test == "Fatigue"):
             self.chooseMaterialBox.clear()
             self.chooseMaterialBox.addItems(["Steel 316L"])
@@ -191,7 +193,7 @@ class MainWindow(QMainWindow):
             self.chooseMaterialBox.addItems(["Steel 4140"])
         elif(test == "Vickers Hardness"):
             self.chooseMaterialBox.clear()
-            self.chooseMaterialBox.addItems(["Titanium"])
+            self.chooseMaterialBox.addItems(["?Titanium?"])
 
         
 

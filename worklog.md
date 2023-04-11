@@ -45,7 +45,7 @@ Tried some things with the time bar gui, so far nothing that is what I am lookin
 
 Pygame widgets seems to be working. I've set up a resizing, so it changes with the window size. Still need to set up time jumping. Also need to test 720p video.
 
-## April 10 [2:00AM - 5:00AM] [10:30AM - 11:30AM] [2:00PM - 5:00PM]
+## April 10 [2:00AM - 5:00AM] [10:30AM - 11:30AM] [2:00PM - 7:00PM]
 
 Working more on time bar, it now reflects the positon of the video, but need video to freeze when the time bar is held, and reflect where it is dragged to. Having bugs with the closing windows, and bugs with the videos not playing all the way through. The time bar is now complete, minus the potential functionality of a preview.
 

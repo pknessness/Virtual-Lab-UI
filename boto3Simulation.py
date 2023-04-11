@@ -30,6 +30,7 @@ def runWindow(fps, material, test, trueTimeFlag):
 
     #print(f"key: {key}")                
 
+    
     url = s3_client.generate_presigned_url('get_object', 
                                         Params = {'Bucket': "vlabtesting", 'Key': key}, 
                                         ExpiresIn = 2400) #this url will be available for 600 seconds
@@ -66,6 +67,14 @@ def runWindow(fps, material, test, trueTimeFlag):
     prevFrame = 0
     setFrame = True
 
+    
+
+    onClickPos = (0,0)
+    offClickPos = (0,0)
+    holdPos = (0,0)
+    mousePrevPress = False
+    zoomed = False
+
     while run:
         clock.tick(fps)
         events = pygame.event.get()
@@ -77,6 +86,17 @@ def runWindow(fps, material, test, trueTimeFlag):
             elif event.type == pygame.VIDEORESIZE:
                 val = slider.getValue()
                 slider = Slider(window, 0, pygame.display.get_window_size()[1] - sliderHeight, pygame.display.get_window_size()[0], sliderHeight, curved = False, handleRadius = 15, max = frameMax, color = barColor, handleColor = barColor, value = val)
+            elif (pygame.mouse.get_pressed()[0] and not mousePrevPress):
+                onClickPos = pygame.mouse.get_pos()
+                holdPos = pygame.mouse.get_pos()
+            elif (not pygame.mouse.get_pressed()[0] and mousePrevPress):
+                offClickPos = pygame.mouse.get_pos()
+            elif (pygame.mouse.get_pressed()[0]):
+                holdPos = pygame.mouse.get_pos()
+            # elif (not pygame.mouse.get_pressed()[0]):
+            #     holdPos = (0,0)
+        mousePrevPress = pygame.mouse.get_pressed()[0]
+                
 
         slider.listen(events)
         
@@ -130,6 +150,10 @@ def runWindow(fps, material, test, trueTimeFlag):
             slider.draw()
 
         window.blit(pygame.transform.scale(video_surf,scaledSize(pygame.display.get_surface().get_size(), video_surf.get_size())), (0, 0))
+        
+        topLeft = (min(onClickPos[0],holdPos[0]),min(onClickPos[1],holdPos[1]))
+        pygame.draw.rect(window, (10,200,20), (topLeft[0],topLeft[1],abs(onClickPos[0] - holdPos[0]),abs(onClickPos[1] - holdPos[1])))
+        print(f"onClick:{onClickPos}, hoo:{(onClickPos[0] - holdPos[0],onClickPos[1] - holdPos[1])}")
         
         pygame.draw.rect(window,(240,100,90), (0, pygame.display.get_window_size()[1] - sliderHeight, locX, sliderHeight))
         pygame.draw.rect(window,(254,10,10), (locX - handleWidth/2, pygame.display.get_window_size()[1] - handleHeight, handleWidth, handleHeight))
