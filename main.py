@@ -48,30 +48,30 @@ class MainWindow(QMainWindow):
         chooseTestType = QComboBox()
         chooseMaterial = QComboBox()
         
-        dial = QDial()
-        doubleSpinBox = QDoubleSpinBox()
-        chooseBreakageOnlyCheckBox = QCheckBox()
-        allFramesOrTimeAccurate = QCheckBox("All Frames?")
-        enterSimButton = QPushButton("Enter Simulation")
-        failure = QLabel()
-        getDataButton = QPushButton("Get Raw Data")
-        playbackSpeed = QSpinBox()
-        playbackSpeedText = QLabel("Playback Speed")
-        success = QLabel()
-        toggle4K = QCheckBox("4K")
+        dial = QDial() #funny dial
+        chooseBreakageOnlyCheckBox = QCheckBox() #breakage only timestamp
+        allFramesOrTimeAccurate = QCheckBox("All Frames?") #attempt at frameskip
+        enterSimButton = QPushButton("Enter Simulation") #enter simulation
+        failure = QLabel() #blank label for failure
+        getDataButton = QPushButton("Get Raw Data") #get data
+        playbackSpeed = QSpinBox() # speed of playback
+        playbackSpeedText = QLabel("Playback Speed") # label for speed of playback
+        success = QLabel() #blank label for raw data success
+        toggle4K = QCheckBox("4K") #4K toggle, future implementation
 
+        #save some as class variables to use them in other functions
         self.successLabel = success
         self.chooseMaterialBox = chooseMaterial
         self.failureLabel = failure
         self.playbackMultiplier = playbackSpeed
         self.dialRoll = dial
 
+        #set up widget layout
         widgets = [
             chooseTestType,
             chooseMaterial,
             failure,
             dial,
-            #doubleSpinBox,
             chooseBreakageOnlyCheckBox,
             enterSimButton,
             getDataButton,
@@ -81,10 +81,9 @@ class MainWindow(QMainWindow):
             #allFramesOrTimeAccurate,
             #toggle4K
         ]
-        chooseTestType.addItems(["Tensile", "Fatigue", "Rockwell Hardness" , "Charpy", "Vickers Hardness"])
+        chooseTestType.addItems(boto3Simulation.testTypes)
         
         chooseMaterial.addItems(["Aluminum 6061", "Steel 1084", "Steel 316L" , "Brass 360", "PLA"])
-        
 
         chooseBreakageOnlyCheckBox.setText("Breakage Point Only")
 
@@ -99,8 +98,8 @@ class MainWindow(QMainWindow):
 
         allFramesOrTimeAccurate.setChecked(True)
 
+        #connect all actions with their respective callback functions
         enterSimButton.clicked.connect(self.start_sim)
-        #enterSimButton.setStyleSheet("color: lime")
 
         allFramesOrTimeAccurate.stateChanged.connect(self.allFrames_changed)
 
@@ -111,8 +110,8 @@ class MainWindow(QMainWindow):
         chooseMaterial.currentTextChanged.connect(self.material_changed)
         chooseTestType.currentTextChanged.connect(self.test_changed)
 
-        chooseTestType.setCurrentIndex(2)
-        chooseMaterial.setCurrentIndex(3)
+        chooseTestType.setCurrentIndex(3)
+        #chooseMaterial.setCurrentIndex(3)
 
         for w in widgets:
             layout.addWidget(w)
@@ -120,99 +119,69 @@ class MainWindow(QMainWindow):
         widget = QWidget()
         widget.setLayout(layout)
 
-        # Set the central widget of the Window. Widget will expand
-        # to take up all the space in the window by default.
         self.setCentralWidget(widget)
     
     def start_sim(self, s):
         global test
-        print(fps)
+        
         self.failureLabel.setText("")
-        #self.failureLabel.setStyleSheet("color:black")
-        try:
-            # p = Process(target=timeSlider.createSlider)
-            # p.start()
 
-            # sliderbar = timeSlider.TimeScale()
-            # sliderbar.show()
-            # globals.setSlider(sliderbar)
+        try:
             if(test == "RockwellHardness"):
                 test = "Hardness"
             if(useAWS):
                 boto3Simulation.runWindow(fps, material, test, allFrames)
             else:
                 #localSimulation.runWindow(fps, material, test, allFrames)
-                print ("no local")
+                print ("No local, please contact the software provider for details")
             self.failureLabel.setText("")
         except FileNotFoundError:
             self.failureLabel.setText("One or more of the videos not found")
             self.failureLabel.setStyleSheet("color:red")
 
+    #if the allframes checkbox has changed
     def allFrames_changed(self, s):
         global allFrames
         allFrames = s
 
-
+    #if the fps spinbox has changed
     def fps_changed(self, s):
         global fps
-        #print("Percent",s)
+
         fps = 30 * s / 100
-        # if(s >= 1000):
-        #    self.playbackMultiplier.setSingleStep(1000)
-        # el
+
         if(s >= 200):
             self.playbackMultiplier.setSingleStep(100)
         else:
             self.playbackMultiplier.setSingleStep(10)
-        #print(fps)
 
+    #if the material spinbox has changed
     def material_changed(self, s):
         global material
         material = s.replace(" ","")
-        #print("Material",material)
-        
-        #if(s > 200):
-        #    playbackspeed
-        #print(fps)
     
+    #if the test spinbox has changed
     def test_changed(self, s):
         global test, material
         test = s.replace(" ","")
-        #print("Test",test)
-        # if(test == "Tensile"):
-        #     self.chooseMaterialBox.clear()
-        #     self.chooseMaterialBox.addItems(["Aluminum 6061", "Steel 1084", "Steel 316L" , "Brass 360", "PLA", "Steel 1018"])
-        # elif(test == "Fatigue"):
-        #     self.chooseMaterialBox.clear()
-        #     self.chooseMaterialBox.addItems(["Steel 316L"])
-        # elif(test == "Rockwell Hardness"):
-        #     self.chooseMaterialBox.clear()
-        #     self.chooseMaterialBox.addItems(["Brass 360"])
-        # elif(test == "Charpy"):
-        #     self.chooseMaterialBox.clear()
-        #     self.chooseMaterialBox.addItems(["Steel 4140"])
-        # elif(test == "Vickers Hardness"):
-        #     self.chooseMaterialBox.clear()
-        #     self.chooseMaterialBox.addItems(["?Titanium?"])
+
         self.chooseMaterialBox.clear()
         self.chooseMaterialBox.addItems(boto3Simulation.materialTypes[test])
 
-        
-
+    #trigger the export data
     def export_data(self, s):
         exportData.export(material, test)
         self.successLabel.setText("Success")
         self.successLabel.setStyleSheet("color:lime")
     
+    #if the dial value has changed
     def modifyDial(self, num):
-        self.dialRoll.setValue(num)
+        self.dialRoll.setValue(num)       
 
-def modifySlider():
-    print(".")  
-        
-
+#set up app
 app = QApplication(sys.argv)
 window = MainWindow()
 window.show()
 
+#trigger app
 app.exec()

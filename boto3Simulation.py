@@ -8,7 +8,8 @@ s3_client = boto3.client('s3',
     aws_secret_access_key=SECRET_KEY,
     #aws_session_token=SESSION_TOKEN
     )
-        
+       
+#constants 
 bucket = "vlabtesting"
 
 videoBaseDirectory = "videos/"
@@ -25,9 +26,11 @@ resolution = "default"
 
 sliderOn = False
 
+#indexing video files 
 result = s3_client.list_objects(Bucket=bucket, Prefix=videoBaseDirectory, Delimiter='/')
 for o in result.get('CommonPrefixes'):
-    print ('sub folder : ', o.get('Prefix').split("/")[1])
+
+    #indexing test types
     t = o.get('Prefix').split("/")[1]
     
     if(t == "Hardness"):
@@ -40,21 +43,24 @@ for o in result.get('CommonPrefixes'):
         else:
             t2 = t2 + i
             
-    materials = []
     materialDir = o.get('Prefix')
-    print("_",materialDir)
+
     mats = s3_client.list_objects(Bucket=bucket, Prefix=materialDir, Delimiter='/')
-    #print(f"mats:{mats}")
+
+    #indexing material types
     materialTypes[t] = []
     for jo in mats.get('Contents'):
+        
         fullKey = jo.get('Key').split("/")
         mat = fullKey[len(fullKey)-1]
-        print(f"file:{mat}")
+        
         if(len(mat) == 0):
             continue
+        
         mat = mat.replace("Full","").replace(".mp4","").replace(".mov","")
         mat2 = mat[0]
         numDone = False
+        
         for j in mat[1:]:
             if(i.isupper() and not numDone):
                 mat2 = mat2 + " " + j
@@ -66,9 +72,9 @@ for o in result.get('CommonPrefixes'):
             materialTypes[t] = [mat2]
         else:
             materialTypes[t].append(mat2)
+            
     testTypes.append(t2)
     
-print(materialTypes)
         
 
 def runWindow(fps, material, test, trueTimeFlag):
@@ -79,16 +85,13 @@ def runWindow(fps, material, test, trueTimeFlag):
     if(resolution == "4K" or resolution == "default"):
         key = videoBaseDirectory + test + "/" + material + "Full.mp4"
     else:
-        key = videoBaseDirectory + test + "/" + material + "Full"+ resolution +".mp4"
-
-    #print(f"key: {key}")                
-
+        key = videoBaseDirectory + test + "/" + material + "Full"+ resolution +".mp4"             
     
     url = s3_client.generate_presigned_url('get_object', 
                                         Params = {'Bucket': bucket, 'Key': key}, 
-                                        ExpiresIn = 2400) #this url will be available for 600 seconds
+                                        ExpiresIn = 2400) #this url will be available for 40 minutes
         
-    print(f"url: {url}")
+    print(f"Temporary URL: {url}")
     cap = cv2.VideoCapture(url)
         
     ret, frame = cap.read() 
@@ -216,11 +219,10 @@ def runWindow(fps, material, test, trueTimeFlag):
         if(not zoomed):
             window.blit(pygame.transform.scale(video_surf,scaledSize(pygame.display.get_surface().get_size(), video_surf.get_size())), (0, 0))
         else:
-            # virtualSize = (pygame.display.get_window_size()[0] * video_surf.get_size()[0] / boxSize[0],pygame.display.get_window_size()[1] * video_surf.get_size()[1] / boxSize[1])
             virtualDisplacement = (-pygame.display.get_window_size()[0] / video_surf.get_size()[0] * onClickPos[0],-pygame.display.get_window_size()[1] / video_surf.get_size()[1] * onClickPos[1])
-            # window.blit(pygame.transform.scale(video_surf,scaledSize(virtualSize, video_surf.get_size())), virtualDisplacement)
+            
             print(f"boxSize:{boxSize} vDisp: {virtualDisplacement}")
-            window.blit(pygame.transform.scale(video_surf,scaledSize(pygame.display.get_surface().get_size(), video_surf.get_size())), (0, 0, boxSize[0],boxSize[1]))
+            window.blit(pygame.transform.scale(video_surf,scaledSize(pygame.display.get_surface().get_size(), video_surf.get_size())), (0, 0, boxSize[0], boxSize[1]))
             
         if(sliderOn):
             topLeft = (min(onClickPos[0],holdPos[0]),min(onClickPos[1],holdPos[1]))
@@ -230,18 +232,8 @@ def runWindow(fps, material, test, trueTimeFlag):
             pygame.draw.rect(window,(240,100,90), (0, pygame.display.get_window_size()[1] - sliderHeight, locX, sliderHeight))
             pygame.draw.rect(window,(254,10,10), (locX - handleWidth/2, pygame.display.get_window_size()[1] - handleHeight, handleWidth, handleHeight))
         
-        # pygame.draw.circle(window,(240,40,60), (int(pygame.display.get_window_size()[0] * float(frameNumber)/frameMax),pygame.display.get_window_size()[1] - 15,),15)
         pygame.display.flip()
 
-        # time += clock.get_time()
-        # if(globals.manualModify):
-        #     video.set(cv2.CAP_PROP_POS_FRAMES, globals.getFrame())
-        #     globals.manualModify = False
-        # else:
-        #     globals.mod(video.get(cv2.CAP_PROP_POS_FRAMES))
-        # if(globals.getSlider() != None):
-        #     print(f"fnum{globals.getFrame()}")
-        #     globals.getSlider().modify(globals.getFrame())
         if(sliderOn):
             prevSelect = slider.selected
         if(frameNumber == frameMax - 1):
