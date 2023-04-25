@@ -44,11 +44,30 @@ for o in result.get('CommonPrefixes'):
     materialDir = o.get('Prefix')
     print("_",materialDir)
     mats = s3_client.list_objects(Bucket=bucket, Prefix=materialDir, Delimiter='/')
-    for jo in mats.get('CommonPrefixes'):
-        mat = jo.get('Prefix').split("/")[1]
+    #print(f"mats:{mats}")
+    for jo in mats.get('Contents'):
+        fullKey = jo.get('Key').split("/")
+        mat = fullKey[len(fullKey)-1]
         print(f"file:{mat}")
-    
+        if(len(mat) == 0):
+            continue
+        mat = mat.replace("Full","").replace(".mp4","").replace(".mov","")
+        mat2 = mat[0]
+        numDone = False
+        for j in mat[1:]:
+            if(i.isupper() and not numDone):
+                mat2 = mat2 + " " + j
+            elif(i.isnumeric() and not numDone):
+                mat2 = mat2 + " " + j
+            else:
+                mat2 = mat2 + j
+        if(not t2 in materialTypes):
+            materialTypes[t2] = [mat2]
+        else:
+            materialTypes[t2].append(mat2)
     testTypes.append(t2)
+    
+print(materialTypes)
         
 
 def runWindow(fps, material, test, trueTimeFlag):
