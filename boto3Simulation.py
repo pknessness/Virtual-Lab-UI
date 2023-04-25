@@ -45,6 +45,7 @@ for o in result.get('CommonPrefixes'):
     print("_",materialDir)
     mats = s3_client.list_objects(Bucket=bucket, Prefix=materialDir, Delimiter='/')
     #print(f"mats:{mats}")
+    materialTypes[t] = []
     for jo in mats.get('Contents'):
         fullKey = jo.get('Key').split("/")
         mat = fullKey[len(fullKey)-1]
@@ -62,9 +63,9 @@ for o in result.get('CommonPrefixes'):
             else:
                 mat2 = mat2 + j
         if(not t2 in materialTypes):
-            materialTypes[t2] = [mat2]
+            materialTypes[t] = [mat2]
         else:
-            materialTypes[t2].append(mat2)
+            materialTypes[t].append(mat2)
     testTypes.append(t2)
     
 print(materialTypes)

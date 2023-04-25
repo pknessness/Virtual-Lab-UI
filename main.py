@@ -179,21 +179,23 @@ class MainWindow(QMainWindow):
         global test, material
         test = s.replace(" ","")
         #print("Test",test)
-        if(test == "Tensile"):
-            self.chooseMaterialBox.clear()
-            self.chooseMaterialBox.addItems(["Aluminum 6061", "Steel 1084", "Steel 316L" , "Brass 360", "PLA", "Steel 1018"])
-        elif(test == "Fatigue"):
-            self.chooseMaterialBox.clear()
-            self.chooseMaterialBox.addItems(["Steel 316L"])
-        elif(test == "Rockwell Hardness"):
-            self.chooseMaterialBox.clear()
-            self.chooseMaterialBox.addItems(["Brass 360"])
-        elif(test == "Charpy"):
-            self.chooseMaterialBox.clear()
-            self.chooseMaterialBox.addItems(["Steel 4140"])
-        elif(test == "Vickers Hardness"):
-            self.chooseMaterialBox.clear()
-            self.chooseMaterialBox.addItems(["?Titanium?"])
+        # if(test == "Tensile"):
+        #     self.chooseMaterialBox.clear()
+        #     self.chooseMaterialBox.addItems(["Aluminum 6061", "Steel 1084", "Steel 316L" , "Brass 360", "PLA", "Steel 1018"])
+        # elif(test == "Fatigue"):
+        #     self.chooseMaterialBox.clear()
+        #     self.chooseMaterialBox.addItems(["Steel 316L"])
+        # elif(test == "Rockwell Hardness"):
+        #     self.chooseMaterialBox.clear()
+        #     self.chooseMaterialBox.addItems(["Brass 360"])
+        # elif(test == "Charpy"):
+        #     self.chooseMaterialBox.clear()
+        #     self.chooseMaterialBox.addItems(["Steel 4140"])
+        # elif(test == "Vickers Hardness"):
+        #     self.chooseMaterialBox.clear()
+        #     self.chooseMaterialBox.addItems(["?Titanium?"])
+        self.chooseMaterialBox.clear()
+        self.chooseMaterialBox.addItems(boto3Simulation.materialTypes[test])
 
         
 
