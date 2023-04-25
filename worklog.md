@@ -56,3 +56,12 @@ Time bar is very slow, jumping takes an innane amount of time. Perhaps this will
 Also am able to compile into a single exe, but need John to test on a separate device to make sure this is usable by anyone.
 
 Time bar looks a little better now, and with 720p its very very fast and absolutely usable.
+
+## April 21 [2:00 PM - 3:00PM] [5:00PM - 7:00PM]
+
+Meeting with john. 
+Disabled time bar as it seems finnicky, but turns out it was just the zoom in being funky. Need to fix zoom in, but it seems the priority is on data randomization, so going to do that first.
+
+Finished data randomization, need to move all raw data onto the aws
+
+Also need to have auto-file detection and auto-menu generation, worked on that a bit, need to finish

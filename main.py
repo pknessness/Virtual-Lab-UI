@@ -76,10 +76,10 @@ class MainWindow(QMainWindow):
             enterSimButton,
             getDataButton,
             success,
-            playbackSpeedText,
-            playbackSpeed,
-            allFramesOrTimeAccurate,
-            toggle4K
+            #playbackSpeedText,
+            #playbackSpeed,
+            #allFramesOrTimeAccurate,
+            #toggle4K
         ]
         chooseTestType.addItems(["Tensile", "Fatigue", "Rockwell Hardness" , "Charpy", "Vickers Hardness"])
         
@@ -198,7 +198,7 @@ class MainWindow(QMainWindow):
         
 
     def export_data(self, s):
-        exportData.export(material)
+        exportData.export(material, test)
         self.successLabel.setText("Success")
         self.successLabel.setStyleSheet("color:lime")
     
