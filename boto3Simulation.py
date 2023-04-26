@@ -13,7 +13,6 @@ s3_client = boto3.client('s3',
 bucket = "vlabtesting"
 
 videoBaseDirectory = "videos/"
-dataBaseDirectory = "raw_data/"
 
 testTypes = []
 materialTypes = {"":[]}
@@ -58,16 +57,20 @@ for o in result.get('CommonPrefixes'):
             continue
         
         mat = mat.replace("Full","").replace(".mp4","").replace(".mov","")
-        mat2 = mat[0]
-        numDone = False
+        #mat2 = mat[0]
+        mat2 = ""
+        prevSpace = True
         
-        for j in mat[1:]:
-            if(i.isupper() and not numDone):
+        for j in mat:
+            if(j.isupper() and not prevSpace):
                 mat2 = mat2 + " " + j
-            elif(i.isnumeric() and not numDone):
+            elif(j.isnumeric() and not prevSpace):
                 mat2 = mat2 + " " + j
             else:
                 mat2 = mat2 + j
+                prevSpace = False
+            if(j.isupper() or j.isnumeric()):
+                prevSpace = True
         if(not t2 in materialTypes):
             materialTypes[t] = [mat2]
         else:
@@ -75,7 +78,7 @@ for o in result.get('CommonPrefixes'):
             
     testTypes.append(t2)
     
-        
+print(materialTypes)
 
 def runWindow(fps, material, test, trueTimeFlag):
     frameCount = 0
@@ -205,8 +208,7 @@ def runWindow(fps, material, test, trueTimeFlag):
             run = False
             continue
 
-        #slider.y = pygame.display.get_window_size()[1] - sliderHeight
-        #slider.width = pygame.display.get_window_size()[0]
+
         if(sliderOn):
             slider.handleColour = (barColor)
             if(not slider.selected):
@@ -219,10 +221,11 @@ def runWindow(fps, material, test, trueTimeFlag):
         if(not zoomed):
             window.blit(pygame.transform.scale(video_surf,scaledSize(pygame.display.get_surface().get_size(), video_surf.get_size())), (0, 0))
         else:
+            # virtualSize = (pygame.display.get_window_size()[0] * video_surf.get_size()[0] / boxSize[0],pygame.display.get_window_size()[1] * video_surf.get_size()[1] / boxSize[1])
             virtualDisplacement = (-pygame.display.get_window_size()[0] / video_surf.get_size()[0] * onClickPos[0],-pygame.display.get_window_size()[1] / video_surf.get_size()[1] * onClickPos[1])
-            
+            # window.blit(pygame.transform.scale(video_surf,scaledSize(virtualSize, video_surf.get_size())), virtualDisplacement)
             print(f"boxSize:{boxSize} vDisp: {virtualDisplacement}")
-            window.blit(pygame.transform.scale(video_surf,scaledSize(pygame.display.get_surface().get_size(), video_surf.get_size())), (0, 0, boxSize[0], boxSize[1]))
+            window.blit(pygame.transform.scale(video_surf,scaledSize(pygame.display.get_surface().get_size(), video_surf.get_size())), (0, 0, boxSize[0],boxSize[1]))
             
         if(sliderOn):
             topLeft = (min(onClickPos[0],holdPos[0]),min(onClickPos[1],holdPos[1]))

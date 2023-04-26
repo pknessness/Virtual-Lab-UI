@@ -65,6 +65,7 @@ class MainWindow(QMainWindow):
         self.failureLabel = failure
         self.playbackMultiplier = playbackSpeed
         self.dialRoll = dial
+        self.exportButton = getDataButton
 
         #set up widget layout
         widgets = [
@@ -167,12 +168,26 @@ class MainWindow(QMainWindow):
 
         self.chooseMaterialBox.clear()
         self.chooseMaterialBox.addItems(boto3Simulation.materialTypes[test])
+        if(test == "Tensile"):
+            self.exportButton.setEnabled(True)
+        else:
+            self.exportButton.setEnabled(False)
 
     #trigger the export data
     def export_data(self, s):
-        exportData.export(material, test)
-        self.successLabel.setText("Success")
-        self.successLabel.setStyleSheet("color:lime")
+        try:
+            exportData.export(material, test)
+            self.successLabel.setText("Success")
+            self.successLabel.setStyleSheet("color:lime")
+        except FileNotFoundError:
+            self.successLabel.setText("Data file not found")
+            self.successLabel.setStyleSheet("color:red")
+        except TypeError:
+            self.successLabel.setText("Data file not found")
+            self.successLabel.setStyleSheet("color:red")
+        except PermissionError:
+            self.successLabel.setText("Permission not given")
+            self.successLabel.setStyleSheet("color:red")
     
     #if the dial value has changed
     def modifyDial(self, num):

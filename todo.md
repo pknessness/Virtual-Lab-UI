@@ -31,3 +31,7 @@
 * when lags, just stop
 
 * add arrows for "ultimte tensile strength, yield stress, and failure point", on graph
+
+* bug when i cancel export data, crash
+
+* bug when i export data that doesnt exist, crash
