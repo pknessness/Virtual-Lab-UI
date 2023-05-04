@@ -35,3 +35,5 @@
 * bug when i cancel export data, crash
 
 * bug when i export data that doesnt exist, crash
+
+* figure out how to perma store data on user pc

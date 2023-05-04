@@ -72,7 +72,7 @@ Also need to have auto-file detection and auto-menu generation, worked on that a
 
 Began indexing bucket to generate menu. Now adding a file will automatically add its menu entry. Added more error codes for raw data, and moved all of that to the AWS as well.
 
-## April 27 [1:00PM - 2:00PM]     (V1.0)
+## April 27 [1:00PM - 2:00PM] (Release V1.0)
 
 Wrote up a basic explanation on my code and what it does. Also emailed a bit with Professor Porter, the first person who will be testing the code.
 
@@ -83,3 +83,5 @@ Meeting with John, met with new guy (Eric?), and talked with him and John about 
 ## May 4 [12:30PM - 2:00PM]
 
 Working on subtitles. Seems to work, need to get the actual sub file from John or make one myself.
+
+Also need to set it up with the aws.
