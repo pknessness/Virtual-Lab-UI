@@ -57,11 +57,29 @@ Also am able to compile into a single exe, but need John to test on a separate d
 
 Time bar looks a little better now, and with 720p its very very fast and absolutely usable.
 
-## April 21 [2:00 PM - 3:00PM] [5:00PM - 7:00PM]
+## April 24 [2:00 PM - 3:00PM] [5:00PM - 7:00PM]
 
 Meeting with john. 
-Disabled time bar as it seems finnicky, but turns out it was just the zoom in being funky. Need to fix zoom in, but it seems the priority is on data randomization, so going to do that first.
+Disabled time bar as it seems finnicky, but turns out it was just the zoom in being funky. Need to fix zoom in, but it seems the priority is on data randomization, so going to do that first
 
 Finished data randomization, need to move all raw data onto the aws
 
 Also need to have auto-file detection and auto-menu generation, worked on that a bit, need to finish
+
+### Finished Entering All Times
+
+## April 25 [12:30PM - 3:30PM]
+
+Began indexing bucket to generate menu. Now adding a file will automatically add its menu entry. Added more error codes for raw data, and moved all of that to the AWS as well.
+
+## April 27 [1:00PM - 2:00PM]     (V1.0)
+
+Wrote up a basic explanation on my code and what it does. Also emailed a bit with Professor Porter, the first person who will be testing the code.
+
+## May 3 [1:30PM - 3:00PM]
+
+Meeting with John, met with new guy (Eric?), and talked with him and John about releasing new versions, improvements, etc. Started working on subtitles and looking into permanent data storage on user computer
+
+## May 4 [12:30PM - 2:00PM]
+
+Working on subtitles. Seems to work, need to get the actual sub file from John or make one myself.

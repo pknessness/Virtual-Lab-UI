@@ -1,0 +1,7 @@
+For the UI application, we used python for its wide range of functionality. The application uses Amazon S3 Buckets to store all the video and data files. The application itself uses the boto3 library to interface with the bucket. We use the UI library PyQt5 for the base UI interface, open-cv2 to grab the video frames, openpyxl to manipulate the data files, and the graphics library pygame for the visualization of the frames themselves.
+
+At the initialization of the application, we use boto3 to index the bucket, and generate the list of videos that are available for the user to view, which generates the list of tests and material types for each test. From there, the user is able to choose a test type and the available materials for each test.
+
+Once a user chooses a test, the user has the option to either enter the simulation, or download the actual data. If the "Get Raw Data" option is chosen, it triggers a dowload operation. We use boto3 to download the file from the S3 Bucket as a temporary file, and load that temporary file into the application with openpyxl. From there, we add a slight variation on the range of $\pm$ 0.0001 for each data point, and then send the file to the desired directory of the user.
+
+If the user chooses to view the simulation, we trigger a view operation. The application uses boto3 to generate a presigned temporary url, then uses open-cv2 to grab individual frames from that url and displays them on the screen using pygame.

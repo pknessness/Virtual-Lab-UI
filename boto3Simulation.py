@@ -1,4 +1,5 @@
-import boto3, cv2, pygame, pygame_widgets, sys
+import boto3, cv2, pygame, pygame_widgets, sys, pysrt
+from datetime import time, datetime
 from pygame_widgets.slider import Slider
 
 from credentials import ACCESS_KEY, SECRET_KEY
@@ -7,7 +8,7 @@ s3_client = boto3.client('s3',
     aws_access_key_id=ACCESS_KEY,
     aws_secret_access_key=SECRET_KEY,
     #aws_session_token=SESSION_TOKEN
-    )
+    )      
        
 #constants 
 bucket = "vlabtesting"
@@ -81,6 +82,8 @@ for o in result.get('CommonPrefixes'):
 print(materialTypes)
 
 def runWindow(fps, material, test, trueTimeFlag):
+    subs = pysrt.open('subs.srt')
+    subIndex = 0
     frameCount = 0
     
     frames = []
@@ -121,7 +124,8 @@ def runWindow(fps, material, test, trueTimeFlag):
     if(sliderOn):
         slider = Slider(window, 0, pygame.display.get_window_size()[1] - sliderHeight, pygame.display.get_window_size()[0], sliderHeight, curved = False, handleRadius = 15, max = frameMax, color = barColor, handleColor = barColor)
 
-    time = 0
+    font = pygame.font.Font('freesansbold.ttf', 32) 
+
     prevSelect = False
     paused = False
     prevFrame = 0
@@ -235,6 +239,23 @@ def runWindow(fps, material, test, trueTimeFlag):
             pygame.draw.rect(window,(240,100,90), (0, pygame.display.get_window_size()[1] - sliderHeight, locX, sliderHeight))
             pygame.draw.rect(window,(254,10,10), (locX - handleWidth/2, pygame.display.get_window_size()[1] - handleHeight, handleWidth, handleHeight))
         
+        font = pygame.font.Font('freesansbold.ttf', int(pygame.display.get_window_size()[1]/32)) 
+        #print(type(subs[subIndex].end.to_time()))
+        if(len(subs) > subIndex):
+            print(subs[subIndex].end.to_time())
+            
+            tex = subs[subIndex]
+            text = font.render(subs[subIndex].text, True, (250,250,250), (0,0,0,100))
+            textRect = text.get_rect()
+    
+            # set the center of the rectangular object.
+            textRect.center = (pygame.display.get_window_size()[0] // 2, pygame.display.get_window_size()[1] * 0.9)
+            window.blit(text, textRect)
+            if(subs[subIndex].end.to_time() < time(hour=int(frameNumber / (fps * 360))%24,minute=int(frameNumber / (fps * 60))%60,second=int(frameNumber / fps)%60,microsecond=int(1000000 * frameNumber / fps)%1000000)):
+                print("next")
+                subIndex+=1
+            #if(len(subs) <= subIndex):
+                pygame.draw.rect(window,(0,0,0),textRect)
         pygame.display.flip()
 
         if(sliderOn):
