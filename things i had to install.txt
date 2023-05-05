@@ -4,4 +4,5 @@ pip install PyQt5
 pip install pygame
 pip install opencv-python
 pip install boto3
+pip install pysrt
 #pip install pygame-widgets
