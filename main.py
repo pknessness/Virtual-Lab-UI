@@ -19,13 +19,17 @@ from PyQt5.QtWidgets import (
     QPushButton,
     QRadioButton,
     QSlider,
+    QLineEdit,
     QSpinBox,
     QVBoxLayout,
+    QHBoxLayout,
     QWidget,
 )
 
 #import localSimulation, 
 import boto3Simulation, exportData
+
+conversions = ["HV", "HK", "HRA", "HRB", "HRC", "UT"]
 
 useAWS = True
 
@@ -58,6 +62,23 @@ class MainWindow(QMainWindow):
         playbackSpeedText = QLabel("Playback Speed") # label for speed of playback
         success = QLabel() #blank label for raw data success
         toggle4K = QCheckBox("4K") #4K toggle, future implementation
+        
+        conversionLayout = QHBoxLayout()
+        
+        inputForm = QComboBox()
+        inputNum = QLineEdit()
+        outputNum = QLineEdit()
+        outputForm = QComboBox()
+        # print(inputForm.size)
+        inputForm.resize(200,50)
+        
+        inputForm.addItems(conversions)
+        outputForm.addItems(conversions)
+        
+        conversionLayout.addWidget(inputForm)
+        conversionLayout.addWidget(inputNum)
+        conversionLayout.addWidget(outputNum)
+        conversionLayout.addWidget(outputForm)
 
         #save some as class variables to use them in other functions
         self.successLabel = success
@@ -116,6 +137,8 @@ class MainWindow(QMainWindow):
 
         for w in widgets:
             layout.addWidget(w)
+
+        #layout.addLayout(conversionLayout)
 
         widget = QWidget()
         widget.setLayout(layout)

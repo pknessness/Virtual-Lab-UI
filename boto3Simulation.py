@@ -24,7 +24,8 @@ handleHeight = 35
 sliderHeight = 30
 resolution = "default"
 
-sliderOn = False
+sliderOn = True
+subsOn = False
 
 #indexing video files 
 result = s3_client.list_objects(Bucket=bucket, Prefix=videoBaseDirectory, Delimiter='/')
@@ -82,8 +83,9 @@ for o in result.get('CommonPrefixes'):
 print(materialTypes)
 
 def runWindow(fps, material, test, trueTimeFlag):
-    subs = pysrt.open('subs.srt')
-    subIndex = 0
+    if(subsOn):
+        subs = pysrt.open('subs.srt')
+        subIndex = 0
     frameCount = 0
     
     frames = []
@@ -97,7 +99,7 @@ def runWindow(fps, material, test, trueTimeFlag):
                                         Params = {'Bucket': bucket, 'Key': key}, 
                                         ExpiresIn = 2400) #this url will be available for 40 minutes
         
-    print(f"Temporary URL: {url}")
+    # print(f"Temporary URL: {url}")
     cap = cv2.VideoCapture(url)
         
     ret, frame = cap.read() 
@@ -114,9 +116,6 @@ def runWindow(fps, material, test, trueTimeFlag):
 
     window = pygame.display.set_mode((600,400), pygame.RESIZABLE)
     clock = pygame.time.Clock()
-
-    print('Path to module:',pygame.__file__)
-    print('Path to module:',pygame_widgets.__file__)
 
     run = success
 
@@ -228,34 +227,35 @@ def runWindow(fps, material, test, trueTimeFlag):
             # virtualSize = (pygame.display.get_window_size()[0] * video_surf.get_size()[0] / boxSize[0],pygame.display.get_window_size()[1] * video_surf.get_size()[1] / boxSize[1])
             virtualDisplacement = (-pygame.display.get_window_size()[0] / video_surf.get_size()[0] * onClickPos[0],-pygame.display.get_window_size()[1] / video_surf.get_size()[1] * onClickPos[1])
             # window.blit(pygame.transform.scale(video_surf,scaledSize(virtualSize, video_surf.get_size())), virtualDisplacement)
-            print(f"boxSize:{boxSize} vDisp: {virtualDisplacement}")
+            #print(f"boxSize:{boxSize} vDisp: {virtualDisplacement}")
             window.blit(pygame.transform.scale(video_surf,scaledSize(pygame.display.get_surface().get_size(), video_surf.get_size())), (0, 0, boxSize[0],boxSize[1]))
             
         if(sliderOn):
             topLeft = (min(onClickPos[0],holdPos[0]),min(onClickPos[1],holdPos[1]))
-            pygame.draw.rect(window, (10,200,20), (topLeft[0],topLeft[1],abs(onClickPos[0] - holdPos[0]),abs(onClickPos[1] - holdPos[1])))
-            print(f"onClick:{onClickPos}, hoo:{(onClickPos[0] - holdPos[0],onClickPos[1] - holdPos[1])}")
+            #pygame.draw.rect(window, (10,200,20), (topLeft[0],topLeft[1],abs(onClickPos[0] - holdPos[0]),abs(onClickPos[1] - holdPos[1])))
+            #print(f"onClick:{onClickPos}, hoo:{(onClickPos[0] - holdPos[0],onClickPos[1] - holdPos[1])}")
             
             pygame.draw.rect(window,(240,100,90), (0, pygame.display.get_window_size()[1] - sliderHeight, locX, sliderHeight))
             pygame.draw.rect(window,(254,10,10), (locX - handleWidth/2, pygame.display.get_window_size()[1] - handleHeight, handleWidth, handleHeight))
         
         font = pygame.font.Font('freesansbold.ttf', int(pygame.display.get_window_size()[1]/32)) 
         #print(type(subs[subIndex].end.to_time()))
-        if(len(subs) > subIndex):
-            print(subs[subIndex].end.to_time())
-            
-            tex = subs[subIndex]
-            text = font.render(subs[subIndex].text, True, (250,250,250), (0,0,0,100))
-            textRect = text.get_rect()
-    
-            # set the center of the rectangular object.
-            textRect.center = (pygame.display.get_window_size()[0] // 2, pygame.display.get_window_size()[1] * 0.9)
-            window.blit(text, textRect)
-            if(subs[subIndex].end.to_time() < time(hour=int(frameNumber / (fps * 360))%24,minute=int(frameNumber / (fps * 60))%60,second=int(frameNumber / fps)%60,microsecond=int(1000000 * frameNumber / fps)%1000000)):
-                print("next")
-                subIndex+=1
-            #if(len(subs) <= subIndex):
-                pygame.draw.rect(window,(0,0,0),textRect)
+        if(subsOn):
+            if(len(subs) > subIndex):
+                #print(subs[subIndex].end.to_time())
+                
+                tex = subs[subIndex]
+                text = font.render(subs[subIndex].text, True, (250,250,250), (0,0,0,100))
+                textRect = text.get_rect()
+        
+                # set the center of the rectangular object.
+                textRect.center = (pygame.display.get_window_size()[0] // 2, pygame.display.get_window_size()[1] * 0.9)
+                window.blit(text, textRect)
+                if(subs[subIndex].end.to_time() < time(hour=int(frameNumber / (fps * 360))%24,minute=int(frameNumber / (fps * 60))%60,second=int(frameNumber / fps)%60,microsecond=int(1000000 * frameNumber / fps)%1000000)):
+                    #print("next")
+                    subIndex+=1
+                #if(len(subs) <= subIndex):
+                    pygame.draw.rect(window,(0,0,0),textRect)
         pygame.display.flip()
 
         if(sliderOn):
