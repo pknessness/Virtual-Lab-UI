@@ -5,4 +5,5 @@ pip install pygame
 pip install opencv-python
 pip install boto3
 pip install pysrt
+pip install openpyxl
 #pip install pygame-widgets
