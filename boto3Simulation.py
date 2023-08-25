@@ -139,7 +139,6 @@ def runWindow(fps, material, test, trueTimeFlag):
     while run:
         clock.tick(fps)
         events = pygame.event.get()
-        pygame_widgets.update(events)
         for event in events:
             if event.type == pygame.QUIT:
                 run = False
@@ -224,16 +223,27 @@ def runWindow(fps, material, test, trueTimeFlag):
         if(not zoomed):
             window.blit(pygame.transform.scale(video_surf,scaledSize(pygame.display.get_surface().get_size(), video_surf.get_size())), (0, 0))
         else:
-            # virtualSize = (pygame.display.get_window_size()[0] * video_surf.get_size()[0] / boxSize[0],pygame.display.get_window_size()[1] * video_surf.get_size()[1] / boxSize[1])
-            virtualDisplacement = (-pygame.display.get_window_size()[0] / video_surf.get_size()[0] * onClickPos[0],-pygame.display.get_window_size()[1] / video_surf.get_size()[1] * onClickPos[1])
-            # window.blit(pygame.transform.scale(video_surf,scaledSize(virtualSize, video_surf.get_size())), virtualDisplacement)
+            if(pygame.display.get_window_size()[0]/boxSize[0] < pygame.display.get_window_size()[1]/boxSize[1]):
+                sizeMult = pygame.display.get_window_size()[0]/boxSize[0]
+                scaledBoxSize = pygame.display.get_window_size()[0], boxSize[1]*sizeMult
+            else:
+                sizeMult = pygame.display.get_window_size()[1]/boxSize[1]
+                scaledBoxSize = boxSize[0]*sizeMult, pygame.display.get_window_size()[1]\
+                
+            newSurf = pygame.transform.scale_by(video_surf, sizeMult)
+
+            boxDist = onClickPos[0] - (pygame.display.get_window_size()[0]-video_surf.get_size()[0]) / 2, onClickPos[1] - (pygame.display.get_window_size()[1]-video_surf.get_size()[1]) / 2
+            scaledBoxDist = boxDist[0] * sizeMult, boxDist[1] * sizeMult
+            print(f"boxdist{boxDist}, onclickpos{onClickPos}")
+            # window.blit(newSurf, (scaledOnClickPos[0] - pygame.display.get_window_size()[0]/2, scaledOnClickPos[1] - pygame.display.get_window_size()[1]/2))
+            window.blit(newSurf, ((pygame.display.get_window_size()[0]-scaledBoxSize[0])/2-scaledBoxDist[0], (pygame.display.get_window_size()[1]-scaledBoxSize[1])/2-scaledBoxDist[1]))
             #print(f"boxSize:{boxSize} vDisp: {virtualDisplacement}")
-            window.blit(pygame.transform.scale(video_surf,scaledSize(pygame.display.get_surface().get_size(), video_surf.get_size())), (0, 0, boxSize[0],boxSize[1]))
+            # window.blit(newSurf, (0, 300))
             
         if(sliderOn):
             topLeft = (min(onClickPos[0],holdPos[0]),min(onClickPos[1],holdPos[1]))
-            #pygame.draw.rect(window, (10,200,20), (topLeft[0],topLeft[1],abs(onClickPos[0] - holdPos[0]),abs(onClickPos[1] - holdPos[1])))
-            #print(f"onClick:{onClickPos}, hoo:{(onClickPos[0] - holdPos[0],onClickPos[1] - holdPos[1])}")
+            pygame.draw.rect(window, (10,200,20), (topLeft[0],topLeft[1],abs(onClickPos[0] - holdPos[0]),abs(onClickPos[1] - holdPos[1])))
+            # print(f"onClick:{onClickPos}, hoo:{(onClickPos[0] - holdPos[0],onClickPos[1] - holdPos[1])}")
             
             pygame.draw.rect(window,(240,100,90), (0, pygame.display.get_window_size()[1] - sliderHeight, locX, sliderHeight))
             pygame.draw.rect(window,(254,10,10), (locX - handleWidth/2, pygame.display.get_window_size()[1] - handleHeight, handleWidth, handleHeight))
